@@ -1,15 +1,15 @@
 
 const jwt = require("jsonwebtoken");
-JWT_SECRET = "one2ka4";
+
 const authentication = (req, res, next) => {
-  const token = req.header("authToken");
+  const token = req.header("authorization");
   if (!token) {
     return res
       .status(401)
       .send({ error: "Please authenticate user with valid token" });
   }
   try {
-    const {userId}=jwt.verify(token, JWT_SECRET);
+    const {userId}=jwt.verify(token, process.env.JWT_SECRET);
     req.user=userId;
     next();
   } catch (error) {

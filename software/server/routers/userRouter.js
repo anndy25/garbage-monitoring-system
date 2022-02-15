@@ -6,7 +6,7 @@ const { body, validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 
-JWT_SECRET = "one2ka4";
+
 const authentication = require("../middlewares/authentication");
 const UserInfo = require("../models/userInfoModel");
 
@@ -68,18 +68,18 @@ userRouter.post(
           .status(400)
           .send({ error: "Please try to login with correct credentials" });
       } else {
-        const authToken = jwt.sign(
+        const token = jwt.sign(
           {
             username: user.username,
             email: user.email,
             roomId: user.roomId,
             userId: user._id,
           },
-          JWT_SECRET
+          process.env.JWT_SECRET
         );
         return res
           .status(200)
-          .send({ authToken, message: "Login sucessful!" });
+          .send({ token, message: "Login sucessful!" });
       }
     } catch (err) {
       console.log(err);

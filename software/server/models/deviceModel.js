@@ -14,9 +14,8 @@ const DeviceInfoSchema = new Schema({
     type: String,
     default: "offline",
   },
-  socketID: {
+  socketId: {
     type: String,
-    unique: true,
     default:null
   },
   data:Schema.Types.Object,

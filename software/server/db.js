@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const mongooseURL ="mongodb+srv://aniket2552001:12345@cluster0.tudxv.mongodb.net/gms-sysytem?retryWrites=true&w=majority";
+const mongooseURL =process.env.DB_URL;
 
 const mongoDBConnection = () => {
   mongoose

@@ -26,20 +26,21 @@ deviceRouter.post(
     }
   }
 );
-deviceRouter.put("/update/:id", authentication, async(req, res) => {
+
+deviceRouter.put("/update/:id", authentication, async (req, res) => {
   try {
-    let deviceInfo =await DeviceInfo.findById(req.params.id);
+    let deviceInfo = await DeviceInfo.findById(req.params.id);
     if (!deviceInfo) {
       return res
         .status(401)
         .send({ error: "Not allowed to update device information" });
     }
     let device = {
-      ...req.body
+      ...req.body,
     };
-    const newDeviceInfo =await DeviceInfo.findByIdAndUpdate(
+    const newDeviceInfo = await DeviceInfo.findByIdAndUpdate(
       req.params.id,
-      { $set: device},
+      { $set: device },
       { new: true }
     );
     return res.status(202).send(newDeviceInfo);
@@ -48,6 +49,20 @@ deviceRouter.put("/update/:id", authentication, async(req, res) => {
     return res.status(500).send({ errors: "Internal Server Error" });
   }
   //  let device=UserInfo.findById(req.user);
+});
+
+
+deviceRouter.get("/projects/:id", authentication, async (req, res) => {
+  if (req.user != req.params.id) {
+    return res.status(401).send({ errors: "Unauthenticated user" });
+  }
+  try {
+    const data = await DeviceInfo.find({ user: req.params.id });
+    return res.status(200).send(data );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ errors: "Internal Server Error" });
+  }
 });
 
 module.exports = deviceRouter;
