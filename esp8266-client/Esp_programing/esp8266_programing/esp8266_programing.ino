@@ -6,10 +6,11 @@
 
 #define USER_SERIAL Serial
 
-const char *ssid = "HARSHADA";
-const char *pass = "aniket@2552001";
+const char *ssid = "Harshal";
+const char *pass = "Harshal19";
 String deviceId = "62089afbf93bdf9dc2ab2c6e";
 String roomId = "cdc13982-13d1-424c-a5f8-7b1391691368";
+long height=100;
 SocketIoClient webSocket;
 
 #define trig D5   // Trig pin
@@ -53,20 +54,24 @@ void sendMeasureData(long data1) {
 
 
 long level() {
-  //  digitalWrite(trig, LOW);
-  //  delayMicroseconds(2);
-  //  digitalWrite(trig, HIGH);
-  //  delayMicroseconds(10);
-  //  digitalWrite(trig, LOW);
-  //  long t = pulseIn(echo, HIGH);
-  //  long cm = t / 29 / 2;
-  //
-  //  long level = 15 - cm; // Change 15 according to your tank depth
-  //  if (level < 0) {
-  //    level = 0;
-  //  }
-  //  Serial.println(level);
-  long level = rand() % 100 + 1;
+    digitalWrite(trig, LOW);
+    delayMicroseconds(5);
+    digitalWrite(trig, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig, LOW);
+    long duration = pulseIn(echo, HIGH);
+    long cm =(duration/2) / 29.1;
+//    Serial.println(cm);
+    long level =(height-cm)*100; // Change 15 according to your tank depth
+    level=level/height;
+    
+//
+    if (level < 0) {
+      level = 0;
+    }
+   
+    Serial.println(level);
+//  long level = rand() % 100 + 1;
   return level;
 }
 
